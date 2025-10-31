@@ -92,8 +92,10 @@ def chunk_pdf(PDF_PATH : str,
     #for a pdf file, we get the index of the page and the page
     # then we clean it(normalize) then we cut in chunks and append it to a dictionnary
         for index_page, page in enumerate(reader.pages, start=1):
+            if index_page > 10: break
             raw_text = page.extract_text()
             clean = normalize(raw_text)
+            print(f"[DEBUG] Page {index_page} -> {len(clean)} chars")
             if len(clean) < 200:
                 continue
         #here I retrieve the chunks and for each chunks I store it in a dictinnnary
@@ -120,6 +122,9 @@ if __name__ == "__main__":
     PDF_F = [f for f in os.listdir(DATA_DIR) if f.lower().endswith(".pdf") ]
     assert PDF_F, "no pdf !"
 
-    test_read(r"C:\Users\MLSD24\Desktop\chatbot\docs\pandas.pdf")
+    test_read(r"C:\Users\MLSD24\Desktop\chatbot\docs\SQL-Manual.pdf")
+    chunks = chunk_pdf(r"C:\Users\MLSD24\Desktop\chatbot\docs\SQL-Manual.pdf",CHUNK_WORDS,OVERLAP,MIN_CHARS)
 
-
+print(f"Chunk generated from SQL.pdf: {len(chunks)} \n")
+print("First chunk preview \n")
+print(chunks[0]['text'][:400])
