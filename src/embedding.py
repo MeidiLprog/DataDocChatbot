@@ -68,6 +68,8 @@ def make_id(m):
     s = f"{['doc']}::{m['page']}::{m['text']}"
     return hashlib.sha1(s.encode('utf-8')).hexdigest()
 
+#here v.list converts vectors previously made as pinecone doesnt accept
+# pytorch/numpy vectors
 records = [
     {"id": make_id(m), "values": v.tolist(), "metadata": m}
     for v, m in zip(vecs, metas)
@@ -76,6 +78,7 @@ print(f"[INFO] Prepared {len(records)} vectors")
 
 
 #now we batch em up into 200 pieces each, then we upsert them
+
 BATCH = 200
 total = 0
 for i in range(0, len(records), BATCH):
