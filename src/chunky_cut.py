@@ -116,7 +116,7 @@ def chunk_pdf(PDF_PATH : str,
     # then we clean it(normalize) then we cut in chunks and append it to a dictionnary
         for index_page, page in enumerate(reader.pages, start=1):
             if index_page > 10: break
-            raw_text = page.extract_text()
+            raw_text = extract_page_text(PDF_PATH,index_page -1) #I call upon my ocr here
             clean = normalize(raw_text)
             print(f"[DEBUG] Page {index_page} -> {len(clean)} chars")
             if len(clean) < 200:
