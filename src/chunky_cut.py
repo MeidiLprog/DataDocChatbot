@@ -19,6 +19,14 @@ import fitz # open pdf, fitz and pdfreader are alike in some ways
 from PIL import Image # convert scanned to images
 import pytesseract # useful, if the pdf file is scanned, we convert it to images and apply some text recognition
 
+#tesseract didn't work because it wasn't found, by adding the path explicitely I'm assuring a success
+_PATH_TO_TESSERACT = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+pytesseract.pytesseract.tesseract_cmd = _PATH_TO_TESSERACT
+
+
+
+
 def info_pdf(func):
     def wrapper(*args,**kwargs):
         print("This function is merely useful just to display the first 300 caracters of a pdf file\n")
@@ -115,15 +123,15 @@ def chunk_pdf(PDF_PATH : str,
     #for a pdf file, we get the index of the page and the page
     # then we clean it(normalize) then we cut in chunks and append it to a dictionnary
         for index_page, page in enumerate(reader.pages, start=1):
-            if index_page > 10: break
+           
             raw_text = extract_page_text(PDF_PATH,index_page -1) #I call upon my ocr here
             clean = normalize(raw_text)
             print(f"[DEBUG] Page {index_page} -> {len(clean)} chars")
-            if len(clean) < 200:
+            if len(clean) < MINCHAR:
                 continue
         #here I retrieve the chunks and for each chunks I store it in a dictinnnary
             for ch in chop_chunks(clean,MAX_WORDS,OVERLAP):
-                if len(ch) >= 200:
+                if len(ch) >= MINCHAR:
                     STORE_DATA.append(
                         {
                             "doc" : docname,
