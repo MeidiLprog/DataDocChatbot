@@ -64,7 +64,7 @@ $$
 \lVert e \rVert_2 = 1 \quad \Longrightarrow \quad \sum_{i=1}^{384} e_i^2 = 1
 $$
 
-This makes cosine similarity equal to the dot product.
+This makes cosine similarity equal to the dot product. Based on Cauchy-Schwartz' inequality
 
 ---
 
