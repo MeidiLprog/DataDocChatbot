@@ -45,25 +45,48 @@ Normalize + Chunk  --->  chunks.jsonl
 
 ---
 
-## ✅ 3) Mathematics (Markdown-safe, no LaTeX)
+## ✅ 3) Mathematics Used
 
-### 3.1 Sentence Embeddings
-- Each text chunk t becomes a 384-dimensional vector: **e(t) in R^384**.
-- L2 normalization: **||e||_2 = 1**, i.e., **sum_{i=1}^{384} (e_i)^2 = 1**.
-- With normalized vectors, cosine similarity equals the dot product.
+> **Tip for GitHub READMEs:** use images for equations since native LaTeX ($$...$$) is not rendered.
 
-### 3.2 Cosine Similarity
-- General form: **cos(theta) = (q · e) / ( ||q|| * ||e|| )**
-- If both q and e are normalized: **cos(theta) = q · e**
-- Higher score ⇒ more relevant chunk.
+### 📌 3.1 Sentence Embeddings
 
-### 3.3 Overlapping Chunking
-- Use overlap (e.g., 900 words with 120 overlap) to avoid cutting sentences and to preserve context.
+Each text chunk `t` becomes a 384‑dimensional semantic vector:  
+![e(t) ∈ R^{384}](https://latex.codecogs.com/png.latex?e%28t%29%20%5Cin%20%5Cmathbb%7BR%7D%5E%7B384%7D)
 
-### 3.4 Stable Vector IDs
-- Each vector ID is **SHA1(doc || page || text)**.
-- Prevents duplicates and ensures idempotent re-ingestion.
+All embeddings are L2‑normalized:  
+![||e||_2 = 1](https://latex.codecogs.com/png.latex?%5ClVert%20e%20%5CrVert_2%20%3D%201%20%5Cquad%5CLongrightarrow%5Cquad%20%5Csum_%7Bi%3D1%7D%5E%7B384%7D%20e_i%5E2%20%3D%201)
 
+This makes cosine similarity equal to the dot product.
+
+---
+
+### 📌 3.2 Cosine Similarity
+
+Given question embedding `q` and chunk embedding `e`:  
+![cos(theta) = frac{q ⋅ e}{||q|| ||e||}](https://latex.codecogs.com/png.latex?%5Ccos%28%5Ctheta%29%20%3D%20%5Cfrac%7Bq%20%5Ccdot%20e%7D%7B%5ClVert%20q%20%5CrVert%20%5ClVert%20e%20%5CrVert%7D)
+
+With normalized vectors:  
+![cos(theta) = q ⋅ e](https://latex.codecogs.com/png.latex?%5Ccos%28%5Ctheta%29%20%3D%20q%20%5Ccdot%20e)
+
+Higher score ⇒ more relevant chunk. Pinecone ranks results with this metric.
+
+---
+
+### 📌 3.3 Overlapping Chunking
+
+Splitting text into fixed‑size chunks can break sentences across boundaries.  
+To preserve context, overlapping windows are used (e.g., 900 words, overlap 120).  
+This increases recall and improves retrieval accuracy.
+
+---
+
+### 📌 3.4 Stable Vector IDs
+
+Each vector uses a SHA‑1 hash of `(doc || page || text)`:  
+![ID = SHA1(doc || page || text)](https://latex.codecogs.com/png.latex?ID%20%3D%20%5Cmathrm%7BSHA1%7D%28%5Ctext%7Bdoc%7D%20%7C%7C%20%5Ctext%7Bpage%7D%20%7C%7C%20%5Ctext%7Btext%7D%29)
+
+This prevents duplicates and makes ingestion idempotent.
 
 
 ---
