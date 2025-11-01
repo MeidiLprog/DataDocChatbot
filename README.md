@@ -7,9 +7,9 @@ It allows a user to ask natural language questions about private PDF documents (
 The chatbot reads, processes, and understands entire documents with or without images stored locally, then uses a combination of semantic search + LLM reasoning to answer the user.
 ---
 
-##What makes this projects unique ?
+## What makes this projects unique ?
 
-Unlike many RAG projects that rely on LangChain abstractions, every stage is built from scratch, which demonstrates a deeper engineering understanding:
+Unlike many RAG projects that rely on LangChain abstractions, every stage is built from scratch thus the whole pipeline, which demonstrates a deeper engineering understanding:
 
 - OCR reading for scanned PDFs
 - Manual chunking strategy
