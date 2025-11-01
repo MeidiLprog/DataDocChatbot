@@ -17,7 +17,7 @@ from collections import defaultdict #useful to prevent KeyErrors to be raised
 import fitz # open pdf, fitz and pdfreader are alike in some ways
 from PIL import Image # convert scanned to images
 import pytesseract # useful, if the pdf file is scanned, we convert it to images and apply some text recognition
-
+import json #useful to save my chunks in a json file
 #tesseract didn't work because it wasn't found, by adding the path explicitely I'm assuring a success
 _PATH_TO_TESSERACT = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
@@ -163,3 +163,10 @@ if chunks:
     print(chunks[0]['text'][:400])
 else:
     print("Aucun chunk (pages sans texte). Essaie un PDF textuel (MLflow/Spark) ou baisse MIN_CHARS=120 pour tester.")
+
+#I save my chunks in a json file to use them for pinecone
+OUT = r"C:\Users\MLSD24\Desktop\chatbot\chunks_SQL_manual.jsonl"
+with open(OUT, "w", encoding="utf-8") as f:
+    for c in chunks:
+        f.write(json.dumps(c, ensure_ascii=False) + "\n")
+print("Saved:", OUT, " | chunks:", len(chunks))
