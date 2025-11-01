@@ -36,6 +36,34 @@ def info_pdf(func):
         return func(*args,**kwargs)
     return wrapper
 
+def extract_page_text_any(pdf_path: str, page_idx_0based: int) -> str:
+    if _PYMUPDF_OK:
+        try:
+            with fitz.open(pdf_path) as doc:
+                page = doc.load_page(page_idx_0based)
+                return normalize(page.get_text("text") or "")
+        except:
+            pass
+
+    try:
+        reader = PdfReader(pdf_path)
+        t = reader.pages[page_idx_0based].extract_text() or ""
+        return normalize(t)
+    except:
+        pass
+
+    if _PDFMINER_OK:
+        try:
+            t = _pdfminer_extract_text(pdf_path, page_numbers=[page_idx_0based]) or ""
+            return normalize(t)
+        except:
+            pass
+
+    return ""
+
+
+
+
 
 #Set up part
 
