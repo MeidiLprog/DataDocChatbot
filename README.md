@@ -204,3 +204,10 @@ MIT — see `LICENSE`
 ## Conclusion
 
 A project carried out with dedication and commitment to unveil the secrets of RAGS and agents to acquire a solid foundation of the domain, and ready to bring it forth to a larger scale
+
+![Gradio](images/first.gif)
+
+![Gradio](images/second.gif)
+
+
+
