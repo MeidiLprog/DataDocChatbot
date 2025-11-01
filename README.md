@@ -1,26 +1,25 @@
-# DataDocChatbot
+##DataDocChatbot
 
-DataDocChatbot is a **Retrieval-Augmented Generation (RAG)** assistant designed to answer questions from your private PDF documents related to SQL or data engineering, even when scanned (OCR).  
-It extracts text, generates semantic embeddings, indexes them in Pinecone, and produces grounded answers using Groq (Llama-3.1) with verifiable citations.
+DataDocChatbot is a fully custom Retrieval-Augmented Generation (RAG) assistant built without LangChain, meaning all internal steps (OCR, chunking, embeddings, vector search, prompt-building, inference) were engineered manually.
 
+It allows a user to ask natural language questions about private PDF documents (SQL manuals, Data Engineering books, Pandas references, MLflow documentation, etc.) — including scanned PDFs — and returns grounded answers with verifiable citations.
+
+The chatbot reads, processes, and understands entire documents stored locally, then uses a combination of semantic search + LLM reasoning to answer the user.
 ---
 
-## Overview
+##What makes this projects unique ?
 
-Complete RAG pipeline:
+Unlike many RAG projects that rely on LangChain abstractions, every stage is built from scratch, which demonstrates a deeper engineering understanding:
 
-- PDF ingestion (text + scanned images)
-- Text normalization & semantic chunking
-- Embeddings using `sentence-transformers/all-MiniLM-L6-v2`
-- Vector storage in Pinecone (cosine similarity)
-- Retrieval of top relevant chunks
-- Answer generation via Groq Llama-3.1-8B
-- Web chatbot UI with Gradio (streaming)
+- OCR reading for scanned PDFs
+- Manual chunking strategy
+- Mathematical vector embeddings
+- Direct Pinecone API usage (no wrapper)
+- Prompt engineering
+- LLM inference using Groq (Llama-3.1-8B)
+- Gradio interface with streaming responses
 
-**Why RAG?**  
-LLMs do not know your private documents.  
-RAG retrieves relevant text first and constrains the model to answer **only** from those excerpts → fewer hallucinations, traceable citations.
-
+This gives full control over the pipeline, nothing is “magic”.
 ---
 
 ## Architecture
