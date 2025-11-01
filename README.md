@@ -45,61 +45,25 @@ Normalize + Chunk  --->  chunks.jsonl
 
 ---
 
-## Mathematics Used
-
-> **Tip for GitHub READMEs:** use inline math with `$...$` and display math with `$$...$$` (no indentation).
+## ✅ 3) Mathematics (Markdown-safe, no LaTeX)
 
 ### 3.1 Sentence Embeddings
-
-Each text chunk $t$ becomes a 384‑dimensional semantic vector:
-$$
-e(t) \in \mathbb{R}^{384}
-$$
-
-All embeddings are L2‑normalized:
-$$
-\lVert e 
-Vert_2 = 1 \quad\Longrightarrow\quad \sum_{i=1}^{384} e_i^2 = 1
-$$
-
-This makes cosine similarity equal to the dot product.
-
----
+- Each text chunk t becomes a 384-dimensional vector: **e(t) in R^384**.
+- L2 normalization: **||e||_2 = 1**, i.e., **sum_{i=1}^{384} (e_i)^2 = 1**.
+- With normalized vectors, cosine similarity equals the dot product.
 
 ### 3.2 Cosine Similarity
-
-Given question embedding $q$ and chunk embedding $e$:
-$$
-\cos(	heta) \;=\; rac{q \cdot e}{\lVert q 
-Vert \, \lVert e 
-Vert}
-$$
-
-With normalized vectors:
-$$
-\cos(	heta) \;=\; q \cdot e
-$$
-
-Higher score ⇒ more relevant chunk. Pinecone ranks results with this metric.
-
----
+- General form: **cos(theta) = (q · e) / ( ||q|| * ||e|| )**
+- If both q and e are normalized: **cos(theta) = q · e**
+- Higher score ⇒ more relevant chunk.
 
 ### 3.3 Overlapping Chunking
-
-Splitting text into fixed‑size chunks can break sentences across boundaries.  
-To preserve context, overlapping windows are used (e.g., 900 words, overlap 120).  
-This increases recall and improves retrieval accuracy.
-
----
+- Use overlap (e.g., 900 words with 120 overlap) to avoid cutting sentences and to preserve context.
 
 ### 3.4 Stable Vector IDs
+- Each vector ID is **SHA1(doc || page || text)**.
+- Prevents duplicates and ensures idempotent re-ingestion.
 
-Each vector uses a SHA‑1 hash of `(doc || page || text)`:
-$$
-ID = \mathrm{SHA1}(	ext{doc} \,\|\, 	ext{page} \,\|\, 	ext{text})
-$$
-
-This prevents duplicates and makes ingestion idempotent.
 
 
 ---
