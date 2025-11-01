@@ -72,7 +72,7 @@ def extract_page_text(PATH : str, page_index : int, lang : str = "eng") -> str:
         if len(text) >= 50:
             return text
         mat = fitz.Matrix(300/72,300/72) #we crate a bitmap of 300 dpi
-        pix = page.get_pixmap(matrix=mat,alpha=False)
+        pix = page.get_pixmap(matrix=mat,alpha=False)#bitmap
         #once the matrix is built, we create our image
         img = Image.frombytes("RGB",[pix.width,pix.height],pix.samples)
 
