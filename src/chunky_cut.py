@@ -16,6 +16,13 @@ import re
 from pypdf import PdfReader
 from collections import defaultdict #useful to prevent KeyErrors to be raised
 
+try:
+    pdfminer.high_level import extract_text as _pdfminer_extract_text
+    _PDFMINER_OK = True
+except:
+    _PDFMINER_OK = False
+    
+
 def info_pdf(func):
     def wrapper(*args,**kwargs):
         print("This function is merely useful just to display the first 300 caracters of a pdf file\n")
@@ -93,7 +100,8 @@ def chunk_pdf(PDF_PATH : str,
     # then we clean it(normalize) then we cut in chunks and append it to a dictionnary
         for index_page, page in enumerate(reader.pages, start=1):
             if index_page > 10: break
-            raw_text = page.extract_text()
+            raw_text = extract_page_text_any(PDF_PATH, index_page - 1)
+
             clean = normalize(raw_text)
             print(f"[DEBUG] Page {index_page} -> {len(clean)} chars")
             if len(clean) < 200:
@@ -127,4 +135,7 @@ if __name__ == "__main__":
 
 print(f"Chunk generated from SQL.pdf: {len(chunks)} \n")
 print("First chunk preview \n")
-print(chunks[0]['text'][:400])
+if chunks:
+    print(chunks[0]['text'][:400])
+else:
+    print("Aucun chunk (pages sans texte). Essaie un PDF textuel (MLflow/Spark) ou baisse MIN_CHARS=120 pour tester.")
