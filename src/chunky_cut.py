@@ -12,17 +12,18 @@ in pinecone
 '''
 
 import os
-import re
+import re # used to do regular expressions
 from pypdf import PdfReader
 from collections import defaultdict #useful to prevent KeyErrors to be raised
-
+import fitz # open pdf, fitz and pdfreader are alike in some ways
+from PIL import Image # convert scanned to images
+import pytesseract # useful, if the pdf file is scanned, we convert it to images and apply some text recognition
 
 def info_pdf(func):
     def wrapper(*args,**kwargs):
         print("This function is merely useful just to display the first 300 caracters of a pdf file\n")
         return func(*args,**kwargs)
     return wrapper
-
 
 
 #Set up part
@@ -54,6 +55,18 @@ so we remove excedants of spaces and returns
 so we have something exploitable
 '''
 #we compile in advance to make the search easier and quicker
+
+def extract_page_text(PATH : str, page_index : int, lang : str = "fra+eng") -> str:
+
+    with fitz.open(PATH) as doc:
+        page = doc.load_page(page_index) # we just load one page not the thing
+
+        text = page.get_text().strip() # "clean the string end/beginning"
+        if len(text) >= 50:
+            return text
+        mat = fitz.Matrix(300/72,300/72) #we crate a bitmap of 300 dpi
+        pix = page.get_pixmap(matrix=mat,alpha=False)
+
 NORMALIZE_SPACES = re.compile(r"\s+")
 
 def normalize(text : str) -> str:
@@ -65,6 +78,7 @@ def normalize(text : str) -> str:
 
 def file_exist(NAME_OF_FILE: str):
     return True if os.path.isfile(NAME_OF_FILE) else False
+
 
 
 print("Chopping our documents \n")
@@ -95,8 +109,7 @@ def chunk_pdf(PDF_PATH : str,
     # then we clean it(normalize) then we cut in chunks and append it to a dictionnary
         for index_page, page in enumerate(reader.pages, start=1):
             if index_page > 10: break
-            raw_text = extract_page_text_any(PDF_PATH, index_page - 1)
-
+            raw_text = page.extract_text()
             clean = normalize(raw_text)
             print(f"[DEBUG] Page {index_page} -> {len(clean)} chars")
             if len(clean) < 200:
