@@ -16,12 +16,19 @@ import re
 from pypdf import PdfReader
 from collections import defaultdict #useful to prevent KeyErrors to be raised
 
+
 try:
-    pdfminer.high_level import extract_text as _pdfminer_extract_text
+    import fitz  # PyMuPDF
+    _PYMUPDF_OK = True
+except Exception:
+    _PYMUPDF_OK = False
+
+try:
+    from pdfminer.high_level import extract_text as _pdfminer_extract_text
     _PDFMINER_OK = True
 except:
     _PDFMINER_OK = False
-    
+
 
 def info_pdf(func):
     def wrapper(*args,**kwargs):
