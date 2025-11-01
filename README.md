@@ -1,8 +1,8 @@
-##DataDocChatbot
+## DataDocChatbot
 
 DataDocChatbot is a fully custom Retrieval-Augmented Generation (RAG) assistant built without LangChain, meaning all internal steps (OCR, chunking, embeddings, vector search, prompt-building, inference) were engineered manually.
 
-It allows a user to ask natural language questions about private PDF documents (SQL manuals, Data Engineering books, Pandas references, MLflow documentation, etc.) — including scanned PDFs — and returns grounded answers with verifiable citations.
+It allows a user to ask natural language questions about private PDF documents (SQL manuals, Data Engineering books, Pandas references, MLflow documentation, etc.) including scanned PDFs and returns grounded answers with verifiable citations.
 
 The chatbot reads, processes, and understands entire documents stored locally, then uses a combination of semantic search + LLM reasoning to answer the user.
 ---
