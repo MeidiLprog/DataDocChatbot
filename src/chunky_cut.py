@@ -66,6 +66,13 @@ def extract_page_text(PATH : str, page_index : int, lang : str = "fra+eng") -> s
             return text
         mat = fitz.Matrix(300/72,300/72) #we crate a bitmap of 300 dpi
         pix = page.get_pixmap(matrix=mat,alpha=False)
+        #once the matrix is built, we create our image
+        img = Image.frombytes("RGB",[pix.width,pix.height],pix.samples)
+
+        #now we can finally use OCR to read our text
+        ocr = pytesseract.image_to_string(img,lang=lang,config="--oem 1 --psm 6")
+
+        return ocr.strip()
 
 NORMALIZE_SPACES = re.compile(r"\s+")
 
