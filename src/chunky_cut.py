@@ -81,7 +81,7 @@ def extract_page_text(PATH : str, page_index : int, lang : str = "eng") -> str:
 
         return ocr.strip()
 
-NORMALIZE_SPACES = re.compile(r"\s+")
+NORMALIZE_SPACES = re.compile(r"\s+") #great tip to reuse, only compiled once
 
 def normalize(text : str) -> str:
 
@@ -162,7 +162,7 @@ print("First chunk preview \n")
 if chunks:
     print(chunks[0]['text'][:400])
 else:
-    print("Aucun chunk (pages sans texte). Essaie un PDF textuel (MLflow/Spark) ou baisse MIN_CHARS=120 pour tester.")
+    print("No chunks -> Page without content. reduce minchar to 120.")
 
 #I save my chunks in a json file to use them for pinecone
 OUT = r"C:\Users\MLSD24\Desktop\chatbot\chunks_SQL_manual.jsonl"
