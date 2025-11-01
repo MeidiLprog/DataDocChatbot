@@ -13,7 +13,6 @@ in pinecone
 
 import os
 import re # used to do regular expressions
-from pypdf import PdfReader
 from collections import defaultdict #useful to prevent KeyErrors to be raised
 import fitz # open pdf, fitz and pdfreader are alike in some ways
 from PIL import Image # convert scanned to images
@@ -44,7 +43,7 @@ MIN_CHARS = 200
 SHOW_EXAMPLES_PER_DOC = 2
 
 #End set up
-
+'''
 @info_pdf
 def test_read(path_file : str) -> None:
 
@@ -54,7 +53,7 @@ def test_read(path_file : str) -> None:
     print(trc[:300])
 
     return
-
+'''
 #now that our test worked out fine
 '''
 Let us build functions to break down our text
@@ -64,7 +63,7 @@ so we have something exploitable
 '''
 #we compile in advance to make the search easier and quicker
 
-def extract_page_text(PATH : str, page_index : int, lang : str = "fra+eng") -> str:
+def extract_page_text(PATH : str, page_index : int, lang : str = "eng") -> str:
 
     with fitz.open(PATH) as doc:
         page = doc.load_page(page_index) # we just load one page not the thing
@@ -117,28 +116,30 @@ def chunk_pdf(PDF_PATH : str,
     if file_exist(PDF_PATH) == True:
         print("File verified !")
 
-        reader = PdfReader(PDF_PATH)
-        docname = os.path.basename(PDF_PATH)
-        STORE_DATA = [] #array of dictionnaries
+        with fitz.open(PDF_PATH) as fdoc:
+                _NB_PAGES = fdoc.page_count
+
+                docname = os.path.basename(PDF_PATH)
+                STORE_DATA = [] #array of dictionnaries
     #for a pdf file, we get the index of the page and the page
     # then we clean it(normalize) then we cut in chunks and append it to a dictionnary
-        for index_page, page in enumerate(reader.pages, start=1):
-           
-            raw_text = extract_page_text(PDF_PATH,index_page -1) #I call upon my ocr here
-            clean = normalize(raw_text)
-            print(f"[DEBUG] Page {index_page} -> {len(clean)} chars")
-            if len(clean) < MINCHAR:
-                continue
+                start_idx : int = 115
+                for index_page in range(start_idx, _NB_PAGES):
+                    raw_text = extract_page_text(PDF_PATH,index_page) #I call upon my ocr here
+                    clean = normalize(raw_text)
+                    print(f"[DEBUG] Page {index_page+1}/{_NB_PAGES} -> {len(clean)} chars")
+                    if len(clean) < MINCHAR:
+                        continue
         #here I retrieve the chunks and for each chunks I store it in a dictinnnary
-            for ch in chop_chunks(clean,MAX_WORDS,OVERLAP):
-                if len(ch) >= MINCHAR:
-                    STORE_DATA.append(
-                        {
-                            "doc" : docname,
-                            "page" : index_page,
-                            "text" : ch
-                            }
-                            )
+                    for ch in chop_chunks(clean,MAX_WORDS,OVERLAP):
+                        if len(ch) >= MINCHAR:
+                            STORE_DATA.append(
+                                {
+                                    "doc" : docname,
+                                    "page" : index_page +1,
+                                    "text" : ch
+                                }
+                                )
 
     return STORE_DATA
 
@@ -153,7 +154,7 @@ if __name__ == "__main__":
     PDF_F = [f for f in os.listdir(DATA_DIR) if f.lower().endswith(".pdf") ]
     assert PDF_F, "no pdf !"
 
-    test_read(r"C:\Users\MLSD24\Desktop\chatbot\docs\SQL-Manual.pdf")
+    #test_read(r"C:\Users\MLSD24\Desktop\chatbot\docs\SQL-Manual.pdf")
     chunks = chunk_pdf(r"C:\Users\MLSD24\Desktop\chatbot\docs\SQL-Manual.pdf",CHUNK_WORDS,OVERLAP,MIN_CHARS)
 
 print(f"Chunk generated from SQL.pdf: {len(chunks)} \n")
