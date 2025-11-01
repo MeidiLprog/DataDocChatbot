@@ -45,13 +45,13 @@ Normalize + Chunk  --->  chunks.jsonl
 
 ---
 
-## ✅ 3) Mathematics Used
+## Mathematics Used
 
 > **Tip for GitHub READMEs:** use `$...$` for inline math and `$$...$$` for display math.
 
 ---
 
-### 📌 3.1 Sentence Embeddings
+### Sentence Embeddings
 
 Each text chunk $t$ becomes a 384-dimensional semantic vector:
 
@@ -69,7 +69,7 @@ This makes cosine similarity equal to the dot product.
 
 ---
 
-### 📌 3.2 Cosine Similarity
+### Cosine Similarity
 
 Given question embedding $q$ and chunk embedding $e$:
 
@@ -87,7 +87,7 @@ Higher score ⇒ more relevant chunk. Pinecone ranks results with this metric.
 
 ---
 
-### 📌 3.3 Overlapping Chunking
+### Overlapping Chunking
 
 Splitting text into fixed-size chunks can break sentences across boundaries.  
 To preserve context, overlapping windows are used (e.g., 900 words, overlap 120).  
@@ -95,7 +95,7 @@ This increases recall and improves retrieval accuracy.
 
 ---
 
-### 📌 3.4 Stable Vector IDs
+### Stable Vector IDs
 
 Each vector uses a SHA-1 hash of `(doc || page || text)`:
 
@@ -208,9 +208,9 @@ MIT — see `LICENSE`
 
 A project carried out with dedication and commitment to unveil the secrets of RAGS and agents to acquire a solid foundation of the domain, and ready to bring it forth to a larger scale
 
-![Gradio](images/first.gif)
+![Gradio](demo/first.gif)
 
-![Gradio](images/second.gif)
+![Gradio](demo/second.gif)
 
 
 
