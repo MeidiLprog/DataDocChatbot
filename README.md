@@ -46,7 +46,6 @@ Normalize + Chunk  --->  chunks.jsonl
 
 ## Mathematics Used
 
-> **Tip for GitHub READMEs:** use `$...$` for inline math and `$$...$$` for display math.
 
 ---
 
