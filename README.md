@@ -47,39 +47,41 @@ Normalize + Chunk  --->  chunks.jsonl
 
 ## Mathematics Used
 
+> **Tip for GitHub READMEs:** use `$...$` for inline math and `$$...$$` for display math.
+
+---
+
 ### Sentence Embeddings
 
-Each text chunk \( t \) becomes a 384‑dimensional semantic vector:
+Each text chunk $t$ becomes a 384-dimensional semantic vector:
 
-\[
+$$
 e(t) \in \mathbb{R}^{384}
-\]
+$$
 
-All embeddings are L2‑normalized:
+All embeddings are L2-normalized:
 
-\[
-\| e \|_2 = 1
-\quad\Rightarrow\quad
-\sum_{i=1}^{384} e_i^2 = 1
-\]
+$$
+\lVert e \rVert_2 = 1 \quad \Longrightarrow \quad \sum_{i=1}^{384} e_i^2 = 1
+$$
 
 This makes cosine similarity equal to the dot product.
 
 ---
 
-### 3.2 Cosine Similarity
+### Cosine Similarity
 
-Given question embedding \( q \) and chunk embedding \( e \):
+Given question embedding $q$ and chunk embedding $e$:
 
-\[
-	ext{cos}(	heta)=rac{q\cdot e}{\|q\|\|e\|}
-\]
+$$
+\cos(\theta) = \frac{q \cdot e}{\lVert q \rVert \, \lVert e \rVert}
+$$
 
 With normalized vectors:
 
-\[
-	ext{cos}(	heta)=q\cdot e
-\]
+$$
+\cos(\theta) = q \cdot e
+$$
 
 Higher score ⇒ more relevant chunk. Pinecone ranks results with this metric.
 
@@ -87,7 +89,7 @@ Higher score ⇒ more relevant chunk. Pinecone ranks results with this metric.
 
 ### Overlapping Chunking
 
-Splitting text into fixed‑size chunks can break sentences across boundaries.  
+Splitting text into fixed-size chunks can break sentences across boundaries.  
 To preserve context, overlapping windows are used (e.g., 900 words, overlap 120).  
 This increases recall and improves retrieval accuracy.
 
@@ -95,11 +97,11 @@ This increases recall and improves retrieval accuracy.
 
 ### Stable Vector IDs
 
-Each vector uses a SHA‑1 hash of `(doc || page || text)`:
+Each vector uses a SHA-1 hash of `(doc || page || text)`:
 
-\[
-ID = 	ext{SHA1}(doc \,\|\, page \,\|\, text)
-\]
+$$
+ID = \mathrm{SHA1}(\text{doc} \,||\, \text{page} \,||\, \text{text})
+$$
 
 This prevents duplicates and makes ingestion idempotent.
 
@@ -205,3 +207,10 @@ MIT — see `LICENSE`
 ## Conclusion
 
 A project carried out with dedication and commitment to unveil the secrets of RAGS and agents to acquire a solid foundation of the domain, and ready to bring it forth to a larger scale
+
+![Gradio](demo/first.gif)
+
+![Gradio](demo/second.gif)
+
+
+
